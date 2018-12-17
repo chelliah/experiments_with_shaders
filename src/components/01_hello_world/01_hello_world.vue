@@ -1,43 +1,19 @@
-<html>
-  <head>
-    <style>
-      html, body {
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        height: 100%;
-      }
-      #c {
-        width: 100vw;
-        height: 100vh;
-      }
-    </style>
-  </head>
+<template>
   <canvas id="c"/>
-  <script id="2d-vertex-shader" type="notjs">
-      // an attribute will receive data from a buffer
-      attribute vec4 a_position;
+</template>
 
-      // all shaders have a main function
-      void main() {
+<script>
 
-        // gl_Position is a special variable a vertex shader
-        // is responsible for setting
-        gl_Position = a_position;
-      }
-  </script>
-  <script id="2d-fragment-shader" type="notjs">
-      // fragment shaders don't have a default precision so we need
-      // to pick one. mediump is a good default. It means "medium precision"
-      precision mediump float;
+var glsl = require('glslify')
+var fragmengShaderSource = require("./fragment.glsl")
+var vertexShaderSource = require("./vertex.glsl")
+var FragmentShader = glsl(fragmengShaderSource);
+var VertexShader = glsl(vertexShaderSource);
 
-      void main() {
-        // gl_FragColor is a special variable a fragment shader
-        // is responsible for setting
-        gl_FragColor = vec4(1, 0, 0.5, 1); // return redish-purple, opacity 1
-      }
-  </script>
-  <script>
+
+export default {
+  name: 'HelloWorld01',
+  mounted() {
     var canvas = document.getElementById("c");
 
     var gl = canvas.getContext("webgl");
@@ -52,7 +28,7 @@
       if (success) {
         return shader;
       } else {
-        console.log(gl.getShaderInfoLog(shader));
+        // console.log(gl.getShaderInfoLog(shader));
         gl.deleteShader(shader);
       }
     }
@@ -60,6 +36,7 @@
     //link the 2 shaders into a program
     function createProgram(gl, vertexShader, fragmentShader) {
       var program = gl.createProgram();
+      console.log(FragmentShader)
       gl.attachShader(program, vertexShader);
       gl.attachShader(program, fragmentShader);
       gl.linkProgram(program);
@@ -67,14 +44,14 @@
       if (success) {
         return program;
       } else {
-        console.log(gl.getProgramInfoLog(program));
+        // console.log(gl.getProgramInfoLog(program));
         gl.deleteProgram(program);
       }
     }
 
     if (gl) {
-      var vertexShaderSource = document.getElementById("2d-vertex-shader").text;
-      var fragmentShaderSource = document.getElementById("2d-fragment-shader").text;
+      var vertexShaderSource = VertexShader;
+      var fragmentShaderSource = FragmentShader;
 
       var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
       var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
@@ -139,11 +116,17 @@
           positionAttributeLocation, size, type, normalize, stride, offset)
 
       var primitiveType = gl.TRIANGLES;
-      var offset = 0;
       var count = 3;
       gl.drawArrays(primitiveType, offset, count);
     }
+  }
+}
+</script>
 
-
-  </script>
-</html>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+#c {
+  width: 500px;
+  height: 500px;
+}
+</style>
