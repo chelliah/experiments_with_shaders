@@ -16,7 +16,7 @@ export const routes = [
   {
     path: '/01-hello-world',
     name: 'hello-world',
-    label: "Example 01",
+    label: "Example 01 - Hello World",
     component: HelloWorld01
   }
 ]
