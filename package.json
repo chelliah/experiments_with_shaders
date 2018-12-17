@@ -2,24 +2,16 @@
   "name": "hello-world",
   "version": "0.1.0",
   "private": true,
+  "author": "",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chelliah/experiments_with_shaders.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/chelliah/experiments_with_shaders/issues"
-  },
-  "homepage": "https://github.com/chelliah/experiments_with_shaders#readme",
   "dependencies": {
     "glslify": "^7.0.0",
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",
@@ -54,5 +46,14 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/chelliah/experiments_with_shaders/issues"
+  },
+  "homepage": "https://github.com/chelliah/experiments_with_shaders#readme",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chelliah/experiments_with_shaders.git"
+  }
 }
