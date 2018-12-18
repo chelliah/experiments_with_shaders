@@ -34,7 +34,6 @@ export default {
         if (success) {
           return shader;
         } else {
-          // console.log(gl.getShaderInfoLog(shader));
           gl.deleteShader(shader);
         }
       }
@@ -49,7 +48,6 @@ export default {
         if (success) {
           return program;
         } else {
-          // console.log(gl.getProgramInfoLog(program));
           gl.deleteProgram(program);
         }
       }

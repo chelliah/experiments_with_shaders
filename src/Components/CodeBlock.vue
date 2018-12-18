@@ -1,6 +1,6 @@
 <template>
   <div class="code-block">
-      <pre><code class="language-glsl" :contenteditable="isEditable" v-on:blur="onChangeCodeBlock" v-html="$options.filters.highlight(code, 'glsl')"/></pre>
+      <pre><code class="language-glsl" :contenteditable="isEditable" @keyup.esc="blur" v-on:blur="onChangeCodeBlock" v-html="$options.filters.highlight(code, 'glsl')"/></pre>
   </div>
 </template>
 
@@ -13,7 +13,6 @@ Prism.languages.glsl=Prism.languages.extend("clike",{comment:[/\/\*[\s\S]*?\*\//
 
 // Highlight some code
 Vue.filter('highlight', (code, lang = 'glsl') => {
-  console.log('hii', Prism)
   return Prism.highlight(code, Prism.languages[lang], lang)
 })
 
@@ -21,6 +20,9 @@ export default {
   name: 'CodeBlock',
   props: ["code", "isEditable", "onChange"],
   methods: {
+    blur: function (event) {
+      event.target.blur();
+    },
     onChangeCodeBlock: function(event) {
       this.onChange && this.onChange(event.target.outerText);
     }

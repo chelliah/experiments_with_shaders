@@ -2,7 +2,7 @@
   <div class="view">
 
     <h1>{{label}}</h1>
-    <p>So that was hard, from this point on I decided to use <a href="https://threejs.org/" target="_blank">Three.js</a> to
+    <p>So yeah that was hard, from this point on I decided to use <a href="https://threejs.org/" target="_blank">Three.js</a> to
      handle some of the super low level stuff. I wasnt able to figure out how to get the vertex shader working like it did
      in the last example, but since three has better tools for geometry, i'll just focus on the fragment shader for now. </p>
     <code-block :is-editable="true" :on-change="onChangeFragmentShader" :code="fragmentShaderSource"/>
@@ -34,7 +34,14 @@ export default {
   name: 'HelloWorld02',
   components: { CodeBlock },
   data() {
-    return { fragmentShaderSource }
+    return {
+      fragmentShaderSource,
+      container: document.getElementById('c'),
+      camera: new THREE.Camera(),
+      scene: new THREE.Scene(),
+      renderer: new THREE.WebGLRenderer(),
+
+     }
   },
   props: ["label"],
   methods: {
@@ -48,16 +55,15 @@ export default {
     },
     runShader: function() {
       var container;
-      var camera, scene, renderer;
       var uniforms;
 
       const init = () => {
           container = document.getElementById( 'c' );
 
-          camera = new THREE.Camera();
-          camera.position.z = 1;
+          this.camera = new THREE.Camera();
+          this.camera.position.z = 1;
 
-          scene = new THREE.Scene();
+          this.scene = new THREE.Scene();
 
           var geometry = new THREE.PlaneBufferGeometry( 2, 2 );
 
@@ -74,12 +80,12 @@ export default {
           } );
 
           var mesh = new THREE.Mesh( geometry, material );
-          scene.add( mesh );
+          this.scene.add( mesh );
 
-          renderer = new THREE.WebGLRenderer();
-          renderer.setPixelRatio( window.devicePixelRatio );
+          this.renderer = new THREE.WebGLRenderer();
+          this.renderer.setPixelRatio( window.devicePixelRatio );
 
-          container.appendChild( renderer.domElement );
+          container.appendChild( this.renderer.domElement );
 
           onWindowResize();
           window.addEventListener( 'resize', onWindowResize, false );
@@ -91,9 +97,9 @@ export default {
       }
 
       const onWindowResize = () =>  {
-          renderer.setSize(container.getBoundingClientRect().width, container.getBoundingClientRect().height);
-          uniforms.u_resolution.value.x = renderer.domElement.width;
-          uniforms.u_resolution.value.y = renderer.domElement.height;
+          this.renderer.setSize(container.getBoundingClientRect().width, container.getBoundingClientRect().height);
+          uniforms.u_resolution.value.x = this.renderer.domElement.width;
+          uniforms.u_resolution.value.y = this.renderer.domElement.height;
       }
 
       const animate = () => {
@@ -103,7 +109,7 @@ export default {
 
       const render = () => {
           uniforms.u_time.value += 0.05;
-          renderer.render( scene, camera );
+          this.renderer.render( this.scene, this.camera );
       }
 
 

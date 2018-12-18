@@ -3,13 +3,22 @@
 
     <h1>{{label}}</h1>
     <p>
-      Now that we have our examples set up, we can start looking at how information is passed to the gpu. T
-      here are four main ways we can pass data to the GPU: Uniforms, varyings, attributes/buffers, and textures.
+      Now that we have our examples set up, we can start looking at how information is passed to the gpu.
+      There are four main ways we can pass data to the GPU: Uniforms, varyings, attributes/buffers, and textures.
+      Uniforms are consistent across all pixels acted on by the GPU
     </p>
+    <div class="example-links">
+      <button v-on:click="setShader(1)">Example 1</button>
+      <button v-on:click="setShader(2)">Example 2</button>
+    </div>
     <code-block :is-editable="true" :on-change="onChangeFragmentShader" :code="fragmentShaderSource"/>
     <div id="c"/>
     <div>
       <h4>Some notes from book of shaders</h4>
+      <p>
+        The GPU has hardware accelerated angle, trigonometric and exponential functions. Some of those functions are: <code>sin()</code>, <code>cos()</code>, <code>tan()</code>, <code>asin()</code>, <code>acos()</code>, <code>atan()</code>, <code>pow()</code>, <code>exp()</code>, <code>log()</code>, <code>sqrt()</code>, <code>abs()</code>, <code>sign()</code>, <code>floor()</code>, <code>ceil()</code>, <code>fract()</code>, <code>mod()</code>, <code>min()</code>, <code>max()</code> and <code>clamp()</code>.
+      </p>
+      <p>In the second example we use <code>gl_FragCoord</code>, which holds the screen coordinates of the pixel or screen fragment that the active thread is working on. gl_FragCoord is considered a <strong>varying</strong>, because it differs based on the fragment which reads from it</p>
     </div>
   </div>
 </template>
@@ -20,6 +29,7 @@ import CodeBlock from "../../Components/CodeBlock.vue";
 
 var THREE = require("three");
 var fragmentShaderSource = require("./fragment.glsl")
+var fragmentShaderSource2 = require("./fragment2.glsl")
 var vertexShaderSource = require("./vertex.glsl")
 
 
@@ -27,10 +37,30 @@ export default {
   name: 'Uniforms03',
   components: { CodeBlock },
   data() {
-    return { fragmentShaderSource }
+    return {
+      fragmentShaderSource,
+      container: document.getElementById('c'),
+      camera: new THREE.Camera(),
+      scene: new THREE.Scene(),
+      renderer: new THREE.WebGLRenderer(),
+
+     }
   },
   props: ["label"],
   methods: {
+    setShader: function (shader) {
+      let newShader;
+      switch(shader) {
+        case 1:
+          newShader = fragmentShaderSource
+          break;
+        case 2:
+          newShader= fragmentShaderSource2
+          break;
+      }
+
+      this.onChangeFragmentShader(newShader);
+    },
     onChangeFragmentShader: function (newVal) {
       this.fragmentShaderSource = newVal;
 
@@ -41,16 +71,15 @@ export default {
     },
     runShader: function() {
       var container;
-      var camera, scene, renderer;
       var uniforms;
 
       const init = () => {
           container = document.getElementById( 'c' );
 
-          camera = new THREE.Camera();
-          camera.position.z = 1;
+          this.camera = new THREE.Camera();
+          this.camera.position.z = 1;
 
-          scene = new THREE.Scene();
+          this.scene = new THREE.Scene();
 
           var geometry = new THREE.PlaneBufferGeometry( 2, 2 );
 
@@ -67,12 +96,12 @@ export default {
           } );
 
           var mesh = new THREE.Mesh( geometry, material );
-          scene.add( mesh );
+          this.scene.add( mesh );
 
-          renderer = new THREE.WebGLRenderer();
-          renderer.setPixelRatio( window.devicePixelRatio );
+          this.renderer = new THREE.WebGLRenderer();
+          this.renderer.setPixelRatio( window.devicePixelRatio );
 
-          container.appendChild( renderer.domElement );
+          container.appendChild( this.renderer.domElement );
 
           onWindowResize();
           window.addEventListener( 'resize', onWindowResize, false );
@@ -84,9 +113,9 @@ export default {
       }
 
       const onWindowResize = () =>  {
-          renderer.setSize(container.getBoundingClientRect().width, container.getBoundingClientRect().height);
-          uniforms.u_resolution.value.x = renderer.domElement.width;
-          uniforms.u_resolution.value.y = renderer.domElement.height;
+          this.renderer.setSize(container.getBoundingClientRect().width, container.getBoundingClientRect().height);
+          uniforms.u_resolution.value.x = this.renderer.domElement.width;
+          uniforms.u_resolution.value.y = this.renderer.domElement.height;
       }
 
       const animate = () => {
@@ -95,8 +124,8 @@ export default {
       }
 
       const render = () => {
-          uniforms.u_time.value += 0.05;
-          renderer.render( scene, camera );
+          uniforms.u_time.value += 0.01;
+          this.renderer.render( this.scene, this.camera );
       }
 
 
@@ -120,6 +149,18 @@ export default {
 <style scoped>
 
 a {
+  color: #eb357f;
+}
+
+.example-links {
+  display: flex;
+  width: 100%;
+  margin: 0 32px;
+}
+.example-links button {
+  margin: 0 4px 0 0;
+  cursor: pointer;
+
   color: #eb357f;
 }
 #c {
