@@ -1,5 +1,6 @@
 <template>
   <div class="view">
+    <h1>{{label}}</h1>
     <canvas id="c"/>
   </div>
 </template>
@@ -7,19 +8,19 @@
 <script>
 
 var glsl = require('glslify')
-var fragmengShaderSource = require("./fragment.glsl")
+var fragmentShaderSource = require("./fragment.glsl")
 var vertexShaderSource = require("./vertex.glsl")
-var FragmentShader = glsl(fragmengShaderSource);
+var FragmentShader = glsl(fragmentShaderSource);
 var VertexShader = glsl(vertexShaderSource);
 
 
 export default {
   name: 'HelloWorld01',
+  props: ["label"],
   mounted() {
 
     function runShader() {
       var canvas = document.getElementById("c");
-      console.log(canvas);
 
       var gl = canvas.getContext("webgl");
 
@@ -41,7 +42,6 @@ export default {
       //link the 2 shaders into a program
       function createProgram(gl, vertexShader, fragmentShader) {
         var program = gl.createProgram();
-        console.log(FragmentShader)
         gl.attachShader(program, vertexShader);
         gl.attachShader(program, fragmentShader);
         gl.linkProgram(program);

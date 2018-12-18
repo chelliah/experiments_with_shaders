@@ -15,12 +15,11 @@
 </template>
 <script>
   import { routes } from "./router";
-  console.log(routes);
 
   export default {
     name: "App",
     data() {
-      return { routes: routes.map((route) => {return { key: route.key, label: route.label, value: route.path, className: route.className}}) }
+      return { routes: routes.map((route) => {return { key: route.key, label: route.props.label, value: route.path, className: route.className}}) }
     }
   }
 </script>
@@ -93,6 +92,13 @@ html, body {
   flex-basis: 500px;
   flex-grow: 1;
   flex-shrink: 0;
+  height: 100vh;
+  overflow: scroll;
+  box-sizing: border-box;
+
+  text-align: left;
+  padding: 32px 32px 64px;
+  padding-bottom: 64px;
 }
 
 </style>

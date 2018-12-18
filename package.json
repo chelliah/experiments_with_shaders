@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "glslify": "^7.0.0",
+    "prismjs": "^1.15.0",
     "three": "^0.99.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.2"

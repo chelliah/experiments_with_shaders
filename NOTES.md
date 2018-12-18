@@ -15,7 +15,7 @@ From the [Web GL fundamentals site](https://webglfundamentals.org/webgl/lessons/
     * Buffers are arrays of binary data, which contain things like positions, normals (a line or vector that is perpendicular to a given object), texture coordinates, vertext colors.
     * Attributes are used to specify how you pull data out of buffers and provide them to your shaders. Normally these tend to be instructions on where in the buffer information should be extracted (i.e. what position)
     * Buffers are not random access
-  2. Uniforms - Global variables you set before you execute your shader
+  2. Uniforms - Global variables you set before you execute your shader (same for every pixel on the screen)
   3. Textures
     * Arrays of data you can randomly access
     * Mostly used to contain image/color data
