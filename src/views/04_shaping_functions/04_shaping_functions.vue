@@ -2,7 +2,9 @@
   <div class="view">
 
     <h1>{{label}}</h1>
-    <code-block :is-editable="true" :on-change="onChangeFragmentShader" :code="fragmentShaderSource"/>
+
+    <example-button-row :shader-options="shaderOptions" :callback="onChangeFragmentShader"/>
+    <code-block :is-editable="true" :on-change="onChangeFragmentShader" :code="selectedShader"/>
     <div id="c"/>
     <div>
       <p><a href="https://www.desmos.com/calculator/xykhidbkbg" target="_blank">Here</a> is a nice visualizer to see how smoothstep works</p>
@@ -14,26 +16,27 @@
 <script>
 
 import CodeBlock from "../../Components/CodeBlock.vue";
+import ExampleButtonRow from "../../Components/ExampleButtonRow.vue";
 
 var THREE = require("three");
-
-// var glsl = require('glslify')
 var fragmentShaderSource = require("./fragment.glsl")
+var fragmentShaderSource2 = require("./fragment2.glsl")
 var vertexShaderSource = require("./vertex.glsl")
-// var FragmentShader = glsl(fragmentShaderSource);
-// var VertexShader = glsl(vertexShaderSource);
 
 
 export default {
   name: 'ShapingFunctions04',
-  components: { CodeBlock },
+  components: { CodeBlock, ExampleButtonRow },
   data() {
-    return { fragmentShaderSource }
+    return {
+      selectedShader: fragmentShaderSource,
+      shaderOptions: [fragmentShaderSource, fragmentShaderSource2]
+    }
   },
   props: ["label"],
   methods: {
     onChangeFragmentShader: function (newVal) {
-      this.fragmentShaderSource = newVal;
+      this.selectedShader = newVal;
 
       var container = document.getElementById( 'c' );
 
@@ -64,7 +67,7 @@ export default {
           var material = new THREE.ShaderMaterial( {
               uniforms: uniforms,
               vertexShader: vertexShaderSource,
-              fragmentShader: this.fragmentShaderSource
+              fragmentShader: this.selectedShader
           } );
 
           var mesh = new THREE.Mesh( geometry, material );

@@ -15,7 +15,7 @@ export const routes = [
     className: "home",
     component: Home00,
     props: {
-      label: "Examples With Shaders",
+      label: "Experiments With Shaders",
     }
   },
   {

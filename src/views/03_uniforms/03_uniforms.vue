@@ -7,11 +7,8 @@
       There are four main ways we can pass data to the GPU: Uniforms, varyings, attributes/buffers, and textures.
       Uniforms are consistent across all pixels acted on by the GPU
     </p>
-    <div class="example-links">
-      <button v-on:click="setShader(1)">Example 1</button>
-      <button v-on:click="setShader(2)">Example 2</button>
-    </div>
-    <code-block :is-editable="true" :on-change="onChangeFragmentShader" :code="fragmentShaderSource"/>
+    <example-button-row :shader-options="shaderOptions" :callback="onChangeFragmentShader"/>
+    <code-block :is-editable="true" :on-change="onChangeFragmentShader" :code="selectedShader"/>
     <div id="c"/>
     <div>
       <h4>Some notes from book of shaders</h4>
@@ -27,6 +24,8 @@
 
 import CodeBlock from "../../Components/CodeBlock.vue";
 
+import ExampleButtonRow from "../../Components/ExampleButtonRow.vue";
+
 var THREE = require("three");
 var fragmentShaderSource = require("./fragment.glsl")
 var fragmentShaderSource2 = require("./fragment2.glsl")
@@ -35,10 +34,11 @@ var vertexShaderSource = require("./vertex.glsl")
 
 export default {
   name: 'Uniforms03',
-  components: { CodeBlock },
+  components: { CodeBlock, ExampleButtonRow },
   data() {
     return {
-      fragmentShaderSource,
+      selectedShader: fragmentShaderSource,
+      shaderOptions: [fragmentShaderSource, fragmentShaderSource2],
       container: document.getElementById('c'),
       camera: new THREE.Camera(),
       scene: new THREE.Scene(),
@@ -48,21 +48,8 @@ export default {
   },
   props: ["label"],
   methods: {
-    setShader: function (shader) {
-      let newShader;
-      switch(shader) {
-        case 1:
-          newShader = fragmentShaderSource
-          break;
-        case 2:
-          newShader= fragmentShaderSource2
-          break;
-      }
-
-      this.onChangeFragmentShader(newShader);
-    },
     onChangeFragmentShader: function (newVal) {
-      this.fragmentShaderSource = newVal;
+      this.selectedShader = newVal;
 
       var container = document.getElementById( 'c' );
 
@@ -92,7 +79,7 @@ export default {
           var material = new THREE.ShaderMaterial( {
               uniforms: uniforms,
               vertexShader: vertexShaderSource,
-              fragmentShader: this.fragmentShaderSource
+              fragmentShader: this.selectedShader
           } );
 
           var mesh = new THREE.Mesh( geometry, material );
@@ -152,17 +139,6 @@ a {
   color: #eb357f;
 }
 
-.example-links {
-  display: flex;
-  width: 100%;
-  margin: 0 32px;
-}
-.example-links button {
-  margin: 0 4px 0 0;
-  cursor: pointer;
-
-  color: #eb357f;
-}
 #c {
   width: 500px;
   height: 500px;
