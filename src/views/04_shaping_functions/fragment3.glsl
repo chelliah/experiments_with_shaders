@@ -1,6 +1,3 @@
-// Author: Inigo Quiles
-// Title: Expo
-
 #ifdef GL_ES
 precision mediump float;
 #endif
@@ -8,7 +5,6 @@ precision mediump float;
 #define PI 3.14159265359
 
 uniform vec2 u_resolution;
-uniform vec2 u_mouse;
 uniform float u_time;
 
 float plot(vec2 st, float pct){
@@ -19,8 +15,9 @@ float plot(vec2 st, float pct){
 void main() {
     vec2 st = gl_FragCoord.xy/u_resolution;
 
-    //try replacing this with log() or exp()
-    float y = pow(st.x,5.0);
+    // Step will return 0.0 unless the value is over 0.5 (the first parameter),
+    // in that case it will return 1.0
+    float y = step(0.50,st.x);
 
     vec3 color = vec3(y);
 

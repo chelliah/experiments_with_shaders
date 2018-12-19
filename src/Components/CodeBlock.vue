@@ -34,8 +34,8 @@ export default {
 <style>
 
 .code-block {
-  margin: 16px 32px;
-  padding: 16px 32px;
+  margin: 16px;
+  padding: 16px 16px;
   text-align: left;
   background: rgba(0,0,0,0.05);
 }

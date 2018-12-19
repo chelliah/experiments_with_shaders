@@ -61,6 +61,7 @@ html, body {
   text-decoration: none;
   padding: 8px 0;
   position: relative;
+  text-align: left;
 }
 
 #nav li:not(.home) .router-link-exact-active {

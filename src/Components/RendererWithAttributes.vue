@@ -5,16 +5,17 @@
 <script>
 
 var THREE = require("three");
+// var OrbitControls = require('three-orbit-controls')(THREE)
 
 export default {
-  name: 'BasicRenderer',
+  name: 'RendererWithAttributes',
   props: ["vertexShader", "fragmentShader"],
   data() {
     return {
       container: document.getElementById('c'),
       camera: new THREE.Camera(),
       scene: new THREE.Scene(),
-      renderer: new THREE.WebGLRenderer(),
+      renderer: new THREE.WebGLRenderer()
     }
   },
   watch: {
@@ -35,12 +36,47 @@ export default {
       const init = () => {
           container = document.getElementById( 'c' );
 
+
+
           this.camera = new THREE.OrthographicCamera( 500 / - 2, 500 / 2, 500 / 2, 500 / - 2, 1, 1000 );
           this.camera.position.z = 1;
 
-          this.scene = new THREE.Scene();
 
-          var geometry = new THREE.PlaneBufferGeometry( 2, 2 );
+          this.scene = new THREE.Scene();
+          // this.scene.background = new THREE.Color( 0x101010 );
+
+
+          //geometry
+          var geometry = new THREE.BufferGeometry();
+          var positions = new Float32Array([
+
+              1, -1, 0,
+              -1, 1 ,0,
+              -1, -1, 0,
+
+              -1, 1 ,0,
+              1, -1, 0,
+              1, 1, 0,
+          ]);
+          var colors = new Float32Array([
+            1.0,  1.0,  1.0,    // white
+            0.0,  1.0,  0.0,    // green
+            1.0,  0.0,  0.0,    // red
+
+            0.0,  1.0,  0.0,    // green
+            1.0,  1.0,  1.0,    // white
+            0.0,  0.0,  1.0,    // blue
+          ]);
+
+
+          geometry.addAttribute( 'color', new THREE.BufferAttribute( colors, 3) );
+          geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+          // geometry.setDrawRange({ start: 0, count: 4 });
+          geometry.attributes.position.needsUpdate = true;
+          // geometry.computeFaceNormals();
+
+
+
 
           uniforms = {
               u_time: { type: "f", value: 1.0 },
@@ -57,10 +93,19 @@ export default {
           var mesh = new THREE.Mesh( geometry, material );
           this.scene.add( mesh );
 
-          this.renderer = new THREE.WebGLRenderer();
+
+
+          var canvas = document.createElement('canvas');
+          var context = canvas.getContext('webgl2');
+
+          this.renderer = new THREE.WebGLRenderer( { canvas: canvas, context: context } );
           this.renderer.setPixelRatio( window.devicePixelRatio );
 
           container.appendChild( this.renderer.domElement );
+
+
+
+          // var controls = new OrbitControls( this.camera, this.renderer.domElement );
 
           onWindowResize();
           window.addEventListener( 'resize', onWindowResize, false );

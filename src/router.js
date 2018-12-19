@@ -5,6 +5,8 @@ import HelloWorld01 from './views/01_hello_world/01_hello_world.vue'
 import HelloWorld02 from "./views/02_hello_world_three/02_hello_world_three";
 import Uniforms03 from "./views/03_uniforms/03_uniforms.vue";
 import ShapingFunction04 from "./views/04_shaping_functions/04_shaping_functions";
+import Colors05 from "./views/05_colors/05_colors.vue";
+import ColorsWithVertexAttributes05_1 from "./views/05.1_colors_with_vertex_attributes/05.1_colors_with_vertex_attributes.vue";
 
 Vue.use(Router)
 
@@ -50,6 +52,23 @@ export const routes = [
     component: ShapingFunction04,
     props: {
       label: "04 - Shaping Functions",
+    }
+  },
+
+  {
+    path: "/05-color",
+    name: "color",
+    component: Colors05,
+    props: {
+      label: "05 - Color",
+    }
+  },
+  {
+    path: "/05-1-color-with-attributes",
+    name: "color-with-vertex-attributes",
+    component: ColorsWithVertexAttributes05_1,
+    props: {
+      label: "05.1 - Color With Vertex Attributes",
     }
   }
 ]
