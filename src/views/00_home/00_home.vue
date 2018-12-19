@@ -1,5 +1,8 @@
 <template>
-  <h1>Experiments with Shaders</h1>
+  <div>
+    <h1>Experiments with Shaders</h1>
+    <p>This is a bad ripoff of the amazing resource <a href="https://thebookofshaders.com" target="_blank">Book of shaders</a>. Please go there instead, you'll learn more.</p>
+  </div>
 </template>
 
 <script>

@@ -4,7 +4,11 @@
     <h1>{{label}}</h1>
     <code-block :is-editable="true" :on-change="onChangeFragmentShader" :code="fragmentShaderSource"/>
     <div id="c"/>
-  </div>
+    <div>
+      <p><a href="https://www.desmos.com/calculator/xykhidbkbg" target="_blank">Here</a> is a nice visualizer to see how smoothstep works</p>
+      <p>Basically, smoothstep takes three values: the lower limit (edge0), the upper limit (edge1), and the actual value to normalize</p>
+      <p>smoothstep performs smooth Hermite interpolation between 0 and 1 when <code>edge0 &lt; x &lt; edge1</code>. If x is less than edge0, it returns a value of 0, if x is greater than edge1, it returns a value of 1. This is useful in cases where a threshold function with a smooth transition is desired.</p>    </div>
+    </div>
 </template>
 
 <script>
