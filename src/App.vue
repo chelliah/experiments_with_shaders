@@ -61,6 +61,10 @@ html, body {
   text-decoration: none;
   padding: 8px 0;
   position: relative;
+}
+
+#nav li {
+
   text-align: left;
 }
 

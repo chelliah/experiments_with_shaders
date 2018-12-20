@@ -59,13 +59,13 @@ export default {
               1, 1, 0,
           ]);
           var colors = new Float32Array([
+            0.0,  0.0,  1.0,    // blue
             1.0,  1.0,  1.0,    // white
             0.0,  1.0,  0.0,    // green
-            1.0,  0.0,  0.0,    // red
 
-            0.0,  1.0,  0.0,    // green
             1.0,  1.0,  1.0,    // white
             0.0,  0.0,  1.0,    // blue
+            1.0,  0.0,  0.0,    // red
           ]);
 
 

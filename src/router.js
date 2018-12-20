@@ -7,6 +7,8 @@ import Uniforms03 from "./views/03_uniforms/03_uniforms.vue";
 import ShapingFunction04 from "./views/04_shaping_functions/04_shaping_functions";
 import Colors05 from "./views/05_colors/05_colors.vue";
 import ColorsWithVertexAttributes05_1 from "./views/05.1_colors_with_vertex_attributes/05.1_colors_with_vertex_attributes.vue";
+import ColorsWithVertexAttributes05_2 from "./views/05.2_colors_vertex_plain/05.2_colors_vertex_plain.vue";
+import Shapes06 from "./views/06_shapes/06_shapes.vue";
 
 Vue.use(Router)
 
@@ -54,7 +56,6 @@ export const routes = [
       label: "04 - Shaping Functions",
     }
   },
-
   {
     path: "/05-color",
     name: "color",
@@ -69,6 +70,22 @@ export const routes = [
     component: ColorsWithVertexAttributes05_1,
     props: {
       label: "05.1 - Color With Vertex Attributes",
+    }
+  },
+  {
+    path: "/05-2-color-with-attributes-plain",
+    name: "color-with-vertex-attributes-plain",
+    component: ColorsWithVertexAttributes05_2,
+    props: {
+      label: "05.2 - Color With Vertex Attributes (No Three)",
+    }
+  },
+  {
+    path: "/06-Shapes",
+    name: "shapes",
+    component: Shapes06,
+    props: {
+      label: "06 - Shapes",
     }
   }
 ]
