@@ -24,7 +24,7 @@ var vertexShaderSource = require("./vertex.glsl")
 
 
 export default {
-  name: 'Shapes06',
+  name: 'ShapesCircles06_2',
   components: {
     CodeBlock,
     BasicRenderer,

@@ -64,7 +64,7 @@ void main() {
   vec3 r4 = rect(vec2(0.63, 0.78), vec2(0.37, 0.22), vec3(0.0,0.0,1.0));
 
   // yellow box
-  vec3 r5 = rect(vec2(0.93, 0.0), vec2(0.07, 0.45), vec3(1.0,1.0,0.0));
+  vec3 r5 = rect(vec2(0.93, 0.0), vec2(0.07, 0.45), vec3(1.0,0.8,0.1));
 
   gl_FragColor = vec4(vl1*vl2*vl3*hl1*hl2*r1*r2*r3*r4*r5, 1.0);
 }

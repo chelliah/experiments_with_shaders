@@ -8,8 +8,8 @@ import ShapingFunction04 from "./views/04_shaping_functions/04_shaping_functions
 import Colors05 from "./views/05_colors/05_colors.vue";
 import ColorsWithVertexAttributes05_1 from "./views/05.1_colors_with_vertex_attributes/05.1_colors_with_vertex_attributes.vue";
 import ColorsWithVertexAttributes05_2 from "./views/05.2_colors_vertex_plain/05.2_colors_vertex_plain.vue";
-import Shapes06 from "./views/06_shapes/06_shapes.vue";
-
+import ShapesRectangles06 from "./views/06.1_shapes_rectangles/06.1_shapes_rectangles.vue";
+import ShapesCircles06_2 from "./views/06.2_shapes_circles/index.vue";
 Vue.use(Router)
 
 export const routes = [
@@ -81,11 +81,19 @@ export const routes = [
     }
   },
   {
-    path: "/06-Shapes",
+    path: "/06-1-shapes-rectangles",
     name: "shapes",
-    component: Shapes06,
+    component: ShapesRectangles06,
     props: {
-      label: "06 - Shapes",
+      label: "06.1 - Shapes (Rectangles)",
+    }
+  },
+  {
+    path: "/06-2-shapes-circles",
+    name: "shapes",
+    component: ShapesCircles06_2,
+    props: {
+      label: "06.2 - Shapes (Circles)",
     }
   }
 ]

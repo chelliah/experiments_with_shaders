@@ -1,5 +1,10 @@
 <template>
-  <div id="c"/>
+  <div>
+    <div id="c"/>
+    <div class="record-actions">
+      <!-- <div id="record-button" :class="{active: isRecording}" v-on:click="captureStream"></div> -->
+    </div>
+  </div>
 </template>
 
 <script>
@@ -12,9 +17,10 @@ export default {
   data() {
     return {
       container: document.getElementById('c'),
-      camera: new THREE.Camera(),
+      canvasElement: null,
+      camera: null,
       scene: new THREE.Scene(),
-      renderer: new THREE.WebGLRenderer(),
+      renderer: new THREE.WebGLRenderer()
     }
   },
   watch: {
@@ -35,7 +41,7 @@ export default {
       const init = () => {
           container = document.getElementById( 'c' );
 
-          this.camera = new THREE.OrthographicCamera( 500 / - 2, 500 / 2, 500 / 2, 500 / - 2, 1, 1000 );
+          this.camera = new THREE.OrthographicCamera( 500 / - 2, 500 / 2, 500 / 2, 500 / - 2, 2, 1000 );
           this.camera.position.z = 1;
 
           this.scene = new THREE.Scene();
@@ -83,7 +89,7 @@ export default {
       }
 
       const render = () => {
-          uniforms.u_time.value += 0.02;
+          uniforms.u_time.value += 0.05;
           this.renderer.render( this.scene, this.camera );
       }
 
@@ -107,10 +113,31 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.record-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#record-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+#record-button:hover, .record-button.active {
+  background: rgba(215, 40, 40, 0.8)
+}
+
+#record-button.active {
+  border-radius: 0;
+}
 
 #c {
-  width: 500px;
-  height: 500px;
+  width: 1024px;
+  height: 1024px;
   box-shadow: 0 2px 2px rgba(0,0,0,0.3);
   margin: 0 auto;
 }
