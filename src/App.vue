@@ -14,14 +14,14 @@
   </div>
 </template>
 <script>
-  import { routes } from "./router";
+import { routes } from './router'
 
-  export default {
-    name: "App",
-    data() {
-      return { routes: routes.map((route) => {return { key: route.key, label: route.props.label, value: route.path, className: route.className}}) }
-    }
+export default {
+  name: 'App',
+  data () {
+    return { routes: routes.map((route) => { return { key: route.key, label: route.props.label, value: route.path, className: route.className } }) }
   }
+}
 </script>
 <style>
 html, body {
@@ -91,7 +91,6 @@ html, body {
 #nav li.home a {
   font-size: 32px;
 }
-
 
 #view {
   flex-basis: 500px;

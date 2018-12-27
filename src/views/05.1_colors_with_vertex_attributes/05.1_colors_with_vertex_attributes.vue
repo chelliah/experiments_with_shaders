@@ -10,37 +10,35 @@
 
 <script>
 
-import CodeBlock from "../../Components/CodeBlock.vue";
+import CodeBlock from '../../Components/CodeBlock.vue'
 // import ExampleButtonRow from "../../Components/ExampleButtonRow.vue";
-import RendererWithAttributes from "../../Components/RendererWithAttributes.vue";
+import RendererWithAttributes from '../../Components/RendererWithAttributes.vue'
 
-var fragmentShaderSource = require("./fragment.glsl")
+var fragmentShaderSource = require('./fragment.glsl')
 // var fragmentShaderSource2 = require("./fragment2.glsl")
 // var fragmentShaderSource3 = require("./fragment3.glsl")
 // var fragmentShaderSource4 = require("./fragment4.glsl")
 // var fragmentShaderSource5 = require("./fragment5.glsl")
-var vertexShaderSource = require("./vertex.glsl")
-
-
+var vertexShaderSource = require('./vertex.glsl')
 
 export default {
   name: 'ColorsWithVertexAttributes05_1',
   components: {
     CodeBlock,
-    RendererWithAttributes,
+    RendererWithAttributes
     // ExampleButtonRow
   },
-   data() {
+  data () {
     return {
       fragmentShaderSource,
       vertexShaderSource,
       shaderOptions: [fragmentShaderSource]
-     }
+    }
   },
-  props: ["label"],
+  props: ['label'],
   methods: {
     onChangeFragmentShader: function (newVal) {
-      this.fragmentShaderSource = newVal;
+      this.fragmentShaderSource = newVal
     }
   }
 }

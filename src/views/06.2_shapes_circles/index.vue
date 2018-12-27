@@ -10,18 +10,16 @@
 
 <script>
 
-import CodeBlock from "../../Components/CodeBlock.vue";
-import ExampleButtonRow from "../../Components/ExampleButtonRow.vue";
-import BasicRenderer from "../../Components/BasicRenderer.vue";
+import CodeBlock from '../../Components/CodeBlock.vue'
+import ExampleButtonRow from '../../Components/ExampleButtonRow.vue'
+import BasicRenderer from '../../Components/BasicRenderer.vue'
 
-var fragmentShaderSource = require("./fragment.glsl")
-var fragmentShaderSource2 = require("./fragment2.glsl")
-var fragmentShaderSource3 = require("./fragment3.glsl")
-var fragmentShaderSource4 = require("./fragment4.glsl")
+var fragmentShaderSource = require('./fragment.glsl')
+var fragmentShaderSource2 = require('./fragment2.glsl')
+var fragmentShaderSource3 = require('./fragment3.glsl')
+var fragmentShaderSource4 = require('./fragment4.glsl')
 // var fragmentShaderSource5 = require("./fragment5.glsl")
-var vertexShaderSource = require("./vertex.glsl")
-
-
+var vertexShaderSource = require('./vertex.glsl')
 
 export default {
   name: 'ShapesCircles06_2',
@@ -30,17 +28,17 @@ export default {
     BasicRenderer,
     ExampleButtonRow
   },
-   data() {
+  data () {
     return {
       fragmentShaderSource,
       vertexShaderSource,
       shaderOptions: [fragmentShaderSource, fragmentShaderSource2, fragmentShaderSource3, fragmentShaderSource4]
-     }
+    }
   },
-  props: ["label"],
+  props: ['label'],
   methods: {
     onChangeFragmentShader: function (newVal) {
-      this.fragmentShaderSource = newVal;
+      this.fragmentShaderSource = newVal
     }
   }
 }

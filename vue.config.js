@@ -5,7 +5,7 @@ module.exports = {
       .rule('glsl')
       .test(/\.glsl$/)
       .use('webpack-glsl-loader')
-        .loader('webpack-glsl-loader')
-        .end()
+      .loader('webpack-glsl-loader')
+      .end()
   }
 }

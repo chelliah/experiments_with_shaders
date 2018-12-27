@@ -23,28 +23,27 @@
 
 <script>
 
-import CodeBlock from "../../Components/CodeBlock.vue";
-import BasicRenderer from "../../Components/BasicRenderer.vue";
+import CodeBlock from '../../Components/CodeBlock.vue'
+import BasicRenderer from '../../Components/BasicRenderer.vue'
 
-var fragmentShaderSource = require("./fragment.glsl")
-var vertexShaderSource = require("./vertex.glsl")
-
+var fragmentShaderSource = require('./fragment.glsl')
+var vertexShaderSource = require('./vertex.glsl')
 
 export default {
   name: 'HelloWorld02',
   components: { CodeBlock, BasicRenderer },
   methods: {
     onChangeFragmentShader: function (newVal) {
-      this.fragmentShaderSource = newVal;
-    },
+      this.fragmentShaderSource = newVal
+    }
   },
-  data() {
+  data () {
     return {
       fragmentShaderSource,
       vertexShaderSource
-     }
+    }
   },
-  props: ["label"]
+  props: ['label']
 }
 </script>
 

@@ -8,10 +8,10 @@
 
 export default {
   name: 'ExampleButtonRow',
-  props: ["shaderOptions", "callback"],
+  props: ['shaderOptions', 'callback'],
   methods: {
-    onSelect: function(index) {
-      this.shaderOptions[index] && this.callback(this.shaderOptions[index]);
+    onSelect: function (index) {
+      this.shaderOptions[index] && this.callback(this.shaderOptions[index])
     }
   }
 }
