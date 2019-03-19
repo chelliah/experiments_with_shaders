@@ -14,15 +14,19 @@ import CodeBlock from '../../Components/CodeBlock.vue'
 import ExampleButtonRow from '../../Components/ExampleButtonRow.vue'
 import BasicRenderer from '../../Components/BasicRenderer.vue'
 
-var fragmentShaderSource = require('./fragment.glsl')
-var fragmentShaderSource2 = require('./fragment2.glsl')
-var fragmentShaderSource3 = require('./fragment3.glsl')
-var fragmentShaderSource4 = require('./fragment4.glsl')
-var fragmentShaderSource5 = require('./fragment5.glsl')
-var vertexShaderSource = require('./vertex.glsl')
+var fragmentShaderSource = require('./fragment.glsl');
+var fragmentShaderSource2 = require('./fragment2.glsl');
+
+var fragmentShaderSource3 = require('./fragment3.glsl');
+var fragmentShaderSource4 = require('./fragment4.glsl');
+var fragmentShaderSource5 = require('./fragment5.glsl');
+var fragmentShaderSource6 = require('./fragment6.glsl');
+var fragmentShaderSource7 = require('./fragment7.glsl');
+var fragmentShaderSource8 = require('./fragment8.glsl');
+var vertexShaderSource = require('./vertex.glsl');
 
 export default {
-  name: 'ShapesCircles06_2',
+  name: 'Random09',
   components: {
     CodeBlock,
     BasicRenderer,
@@ -32,7 +36,7 @@ export default {
     return {
       fragmentShaderSource,
       vertexShaderSource,
-      shaderOptions: [fragmentShaderSource, fragmentShaderSource2, fragmentShaderSource3, fragmentShaderSource4, fragmentShaderSource5]
+      shaderOptions: [fragmentShaderSource, fragmentShaderSource2, fragmentShaderSource3, fragmentShaderSource4, fragmentShaderSource5, fragmentShaderSource6, fragmentShaderSource7, fragmentShaderSource8],
     }
   },
   props: ['label'],

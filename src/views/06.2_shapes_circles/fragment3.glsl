@@ -33,7 +33,7 @@ void main() {
   gl_FragColor = vec4(vec3(fract(d*10.0)), 1.0);
 
 
-  // gl_FragColor = vec4(vec3(step((0.3 + 0.2*sin(u_time)) - 0.03*sin(u_time/50.*(0.5 - abs(st.y))*(0.5 - abs(st.x))),d) ),1.0);
+  // gl_FragColor = vec4(vec3(step((0.3 + 0.2*sin(u_time)) - 0.03*sin(u_time/20.*(0.5 - abs(st.y))*(0.5 - abs(st.x))),d) ),1.0);
 
   //   gl_FragColor = vec4(vec3(fract(d + 1.456*tan(u_time))),1.0);
   // gl_FragColor = vec4(vec3(step(0.3,d) * step(d,.4)), 1.0);

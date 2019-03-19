@@ -2,7 +2,7 @@
   <div>
     <div id="c"/>
     <div class="record-actions">
-      <div id="record-button" :class="{active: isRecording}" v-on:click="captureStream"></div>
+      <div id="record-button" :class="{active: isRecording}" v-on:click="isRecording=!isRecording"></div>
     </div>
   </div>
 </template>
@@ -10,7 +10,8 @@
 <script>
 
 var THREE = require('three')
-var CCapture = require('../assets/CCapture')
+import CanvasRecorder from "./canvasRecorder.js";
+// var CCapture = require('../assets/CCapture')
 
 export default {
   name: 'BasicRenderer',
@@ -18,6 +19,7 @@ export default {
   data () {
     return {
       container: document.getElementById('c'),
+      isRecording: false,
       canvasElement: null,
       camera: null,
       capturer: null,
@@ -26,6 +28,14 @@ export default {
     }
   },
   watch: {
+    isRecording: function (isNowRecording) {
+      if(isNowRecording) {
+        this.capturer && this.capturer.start();
+      } else {
+        this.capturer && this.capturer.stop();
+        this.capturer.save();
+      }
+    },
     fragmentShader: function () {
       this.onChangeFragmentShader()
     }
@@ -35,9 +45,6 @@ export default {
       var container = document.getElementById('c')
       container.removeChild(container.childNodes[0])
       this.runShader()
-    },
-    captureStream: function () {
-      this.capturer.start()
     },
     runShader: function () {
       var container
@@ -70,8 +77,14 @@ export default {
 
         this.renderer = new THREE.WebGLRenderer()
         this.renderer.setPixelRatio(window.devicePixelRatio)
-        this.capturer = new CCapture({ format: 'webm' })
-        this.canvasElement = this.render.domElement
+        this.canvasElement = this.renderer.domElement
+
+        // if(CCapture) {
+
+        //   console.log('hiii', CCapture)
+        //   this.capturer = new CCapture({ format: 'webm', framerate: 60 });
+        // }
+        this.capturer = new CanvasRecorder(this.canvasElement)
 
         container.appendChild(this.canvasElement)
 
@@ -92,14 +105,15 @@ export default {
 
       const animate = () => {
         requestAnimationFrame(animate)
-        if (this.canvasElement && this.capturer) {
-          this.capturer.capture(this.canvasElement)
-        }
         render()
+
+        // if (this.canvasElement && this.capturer && this.isRecording) {
+        //   this.capturer.capture(this.canvasElement)
+        // }
       }
 
       const render = () => {
-        uniforms.u_time.value += 0.05
+        uniforms.u_time.value += 0.02
         this.renderer.render(this.scene, this.camera)
       }
 

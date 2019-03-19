@@ -1,137 +1,93 @@
-/* global MediaRecorder
-Author: Brett Camper (@professorlemeza)
-URL: https://github.com/tangrams/tangram/blob/master/src/utils/media_capture.js
-*/
-let _createObjectURL
 
-function createObjectURL (url) {
-  if (_createObjectURL === undefined) {
-    _createObjectURL = (window.URL && window.URL.createObjectURL) || (window.webkitURL && window.webkitURL.createObjectURL)
-    if (typeof _createObjectURL !== 'function') {
-      _createObjectURL = null
-      console.log('window.URL.createObjectURL (or vendor prefix) not found, unable to create local blob URLs')
-    }
+export default function CanvasRecorder (canvas, videoBitsPerSec) {
+  this.start = startRecording
+  this.stop = stopRecording
+  this.save = download
+
+  var recordedBlobs = []
+  var supportedType = null
+  var mediaRecorder = null
+
+  var stream = canvas.captureStream()
+  if (stream === undefined || !stream) {
+    return
   }
 
-  if (_createObjectURL) {
-    return _createObjectURL(url)
-  } else {
-    return url
-  }
-}
+  const video = document.createElement('video')
+  video.style.display = 'none'
 
-export default class MediaCapture {
-  constructor () {
-    this.queue_screenshot = null
-    this.video_capture = null
-  }
+  function startRecording () {
+    let types = [
+      'video/webm',
+      'video/webm,codecs=vp9',
+      'video/vp8',
+      'video/webm\;codecs=vp8',
+      'video/webm\;codecs=daala',
+      'video/webm\;codecs=h264',
+      'video/mpeg'
+    ]
 
-  setCanvas (canvas) {
-    this.canvas = canvas
-  }
-
-  // Take a screenshot, returns a promise that resolves with the screenshot data when available
-  screenshot () {
-    if (this.queue_screenshot != null) {
-      return this.queue_screenshot.promise // only capture one screenshot at a time
-    }
-
-    // Will resolve once rendering is complete and render buffer is captured
-    this.queue_screenshot = {}
-    this.queue_screenshot.promise = new Promise((resolve, reject) => {
-      this.queue_screenshot.resolve = resolve
-      this.queue_screenshot.reject = reject
-    })
-    return this.queue_screenshot.promise
-  }
-
-  // Called after rendering, captures render buffer and resolves promise with the image data
-  completeScreenshot () {
-    if (this.queue_screenshot != null) {
-      // Get data URL, convert to blob
-      // Strip host/mimetype/etc., convert base64 to binary without UTF-8 mangling
-      // Adapted from: https://gist.github.com/unconed/4370822
-      const url = this.canvas.toDataURL('image/png')
-      const data = atob(url.slice(22))
-      const buffer = new Uint8Array(data.length)
-      for (let i = 0; i < data.length; ++i) {
-        buffer[i] = data.charCodeAt(i)
+    for (let i in types) {
+      if (MediaRecorder.isTypeSupported(types[i])) {
+        supportedType = types[i]
+        break
       }
-      const blob = new Blob([buffer], { type: 'image/png' })
-
-      // Resolve with screenshot data
-      this.queue_screenshot.resolve({ url, blob, type: 'png' })
-      this.queue_screenshot = null
     }
-  }
-
-  // Starts capturing a video stream from the canvas
-  startVideoCapture () {
-    if (typeof window.MediaRecorder !== 'function' || !this.canvas || typeof this.canvas.captureStream !== 'function') {
-      console.log('warn: Video capture (Canvas.captureStream and/or MediaRecorder APIs) not supported by browser')
-      return false
-    } else if (this.video_capture) {
-      console.log('warn: Video capture already in progress, call Scene.stopVideoCapture() first')
-      return false
+    if (supportedType == null) {
+      console.log('No supported type found for MediaRecorder')
+    }
+    let options = {
+      mimeType: supportedType,
+      videoBitsPerSecond: videoBitsPerSec || 5000000 // 2.5Mbps
     }
 
-    // Start a new capture
+    recordedBlobs = []
     try {
-      let cap = this.video_capture = {}
-      cap.chunks = []
-      cap.stream = this.canvas.captureStream()
-      cap.options = { mimeType: 'video/webm' } // TODO: support other format options
-      cap.media_recorder = new MediaRecorder(cap.stream, cap.options)
-      cap.media_recorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          cap.chunks.push(event.data)
-        }
-
-        // Stopped recording? Create the final capture file blob
-        if (cap.resolve) {
-          let blob = new Blob(cap.chunks, { type: cap.options.mimeType })
-          let url = createObjectURL(blob)
-
-          // Explicitly remove all stream tracks, and set objects to null
-          if (cap.stream) {
-            let tracks = cap.stream.getTracks() || []
-            tracks.forEach(track => {
-              track.stop()
-              cap.stream.removeTrack(track)
-            })
-          }
-          cap.stream = null
-          cap.media_recorder = null
-          this.video_capture = null
-
-          cap.resolve({ url, blob, type: 'webm' })
-        }
-      }
-      cap.media_recorder.start()
+      mediaRecorder = new MediaRecorder(stream, options)
     } catch (e) {
-      this.video_capture = null
-      console.log('error: Scene video capture failed', e)
-      return false
+      alert('MediaRecorder is not supported by this browser.')
+      console.error('Exception while creating MediaRecorder:', e)
+      return
     }
-    return true
+
+    console.log('Created MediaRecorder', mediaRecorder, 'with options', options)
+    mediaRecorder.onstop = handleStop
+    mediaRecorder.ondataavailable = handleDataAvailable
+    mediaRecorder.start(100) // collect 100ms of data blobs
+    console.log('MediaRecorder started', mediaRecorder)
   }
 
-  // Stops capturing a video stream from the canvas, returns a promise that resolves with the video when available
-  stopVideoCapture () {
-    if (!this.video_capture) {
-      console.log('warn: No scene video capture in progress, call Scene.startVideoCapture() first')
-      return Promise.resolve({})
+  function handleDataAvailable (event) {
+    if (event.data && event.data.size > 0) {
+      recordedBlobs.push(event.data)
     }
+  }
 
-    // Promise that will resolve when final stream is available
-    this.video_capture.promise = new Promise((resolve, reject) => {
-      this.video_capture.resolve = resolve
-      this.video_capture.reject = reject
-    })
+  function handleStop (event) {
+    console.log('Recorder stopped: ', event)
+    const superBuffer = new Blob(recordedBlobs, { type: supportedType })
+    video.src = window.URL.createObjectURL(superBuffer)
+  }
 
-    // Stop recording
-    this.video_capture.media_recorder.stop()
+  function stopRecording () {
+    mediaRecorder.stop()
+    console.log('Recorded Blobs: ', recordedBlobs)
+    video.controls = true
+  }
 
-    return this.video_capture.promise
+  function download (fileName) {
+    const name = fileName || 'recording.webm'
+    const blob = new Blob(recordedBlobs, { type: supportedType })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.style.display = 'none'
+    a.href = url
+    a.download = name
+    document.body.appendChild(a)
+    a.click()
+    setTimeout(() => {
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url)
+    }, 100)
   }
 }

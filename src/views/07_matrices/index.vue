@@ -5,6 +5,10 @@
     <example-button-row :shader-options="shaderOptions" :callback="onChangeFragmentShader"/>
     <code-block :is-editable="true" :on-change="onChangeFragmentShader" :code="fragmentShaderSource"/>
     <basic-renderer :fragment-shader="fragmentShaderSource" :vertex-shader="vertexShaderSource"/>
+    <ul>
+      <li>GLSL has native support for 2,3,4 dimensional matrices</li>
+      <li>Glsl also supports matrix multiplication (*) and the function <strong>matrixCompMult()</strong></li>
+    </ul>
   </div>
 </template>
 
@@ -22,7 +26,7 @@ var fragmentShaderSource5 = require('./fragment5.glsl')
 var vertexShaderSource = require('./vertex.glsl')
 
 export default {
-  name: 'ShapesCircles06_2',
+  name: 'Matrices07',
   components: {
     CodeBlock,
     BasicRenderer,

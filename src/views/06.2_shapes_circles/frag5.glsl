@@ -27,27 +27,27 @@ void main(){
   // Drawing with the distance field
 
   float stepcolor = step(
-       0.3 + 0.2*sin(cos(u_time/5.0)/5./(abs(st.y*st.x) - 0.1))
+       0.3 + 0.2*sin(cos(u_time/2.0)/5./(abs(st.y*st.x) - 0.1))
   ,d);
 
   stepcolor = smoothstep(
-       0.3 + 0.2*sin(cos(u_time/5.0)/5./(abs(st.y*st.x) - 0.1)),
-       0.3 + 0.2*sin(cos(u_time/5.0)/5./(abs(st.y*st.x) - 0.1))
+       0.3 + 0.2*sin(cos(u_time/2.0)/5./(abs(st.y*st.x) - 0.1)),
+       0.3 + 0.2*sin(cos(u_time/2.0)/5./(abs(st.y*st.x) - 0.1))
   ,d);
 
   stepcolor = smoothstep(
-       0.3 + 0.5*sin(cos(u_time/5.0)/2./(d - 0.1)),
-       0.3 + 0.5*cos(sin(u_time/5.0)/2./(abs(st.x * st.y) - 0.1))
+       0.3 + 0.5*sin(cos(u_time/2.0)/2./(d - 0.1)),
+       0.3 + 0.5*cos(sin(u_time/2.0)/2./(abs(st.x * st.y) - 0.1))
   ,d);
 
   stepcolor = smoothstep(
-       0.6 + 0.5*sin(cos(u_time/5.0)/2./(d - 0.1)),
-       0.6 + 0.5*cos(sin(u_time/5.0)/2./(abs(st.x * st.y) - 0.1))
+       0.6 + 0.5*sin(cos(u_time/2.0)/2./(d - 0.1)),
+       0.6 + 0.5*cos(sin(u_time/2.0)/2./(abs(st.x * st.y) - 0.1))
   ,d);
 
   stepcolor = smoothstep(
-       0.9 - 0.5*cos(fract(u_time/5.0)/2./(pow(d,2.))),
-       0.9 - 0.7*sin(fract(u_time/10.0)/2./(abs(st.x * st.y) - .1))
+       0.9 - 0.5*cos(fract(u_time/2.0)/2./(pow(d,2.))),
+       0.9 - 0.7*sin(fract(u_time/4.0)/2./(abs(st.x * st.y) - .1))
   ,d);
 
 
