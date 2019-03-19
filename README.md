@@ -1,5 +1,7 @@
 # experiments-with-shaders
 
+This is a project I took on to help begin to understand and experiment with shaders. My code here follows the syllabus provided by [The Book of Shaders](https://thebookofshaders.com/). For the project page itself, I built it using Vue-cli, which was lovely and really straightforward. You can run the page locally using the yarn instructions below, or visit [this site](https://s3.us-east-2.amazonaws.com/shaders-website/index.html#/)
+
 ## Project setup
 ```
 yarn install
