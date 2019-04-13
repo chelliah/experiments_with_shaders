@@ -18,6 +18,7 @@ export default {
   props: ['vertexShader', 'fragmentShader'],
   data () {
     return {
+      shouldRender: false,
       container: document.getElementById('c'),
       isRecording: false,
       canvasElement: null,
@@ -25,7 +26,8 @@ export default {
       capturer: null,
       scene: new THREE.Scene(),
       renderer: new THREE.WebGLRenderer(),
-      uniforms: {}
+      uniforms: {},
+      mesh: {}
     }
   },
   watch: {
@@ -43,12 +45,23 @@ export default {
   },
   methods: {
     onChangeFragmentShader: function () {
+      this.clearAnimation();
+      this.init();
+    },
+    clearAnimation: function() {
+      //keeps multiple instances from continually sending in requestAnimationFrame calls
+      this.shouldRender = false;
       this.container = document.getElementById('c')
-      this.container.removeChild(this.container.childNodes[0])
+      this.container && this.container.childNodes[0] && this.container.removeChild(this.container.childNodes[0])
+      cancelAnimationFrame(this.animate);
       window.removeEventListener('resize', this.onWindowResize, false)
       window.removeEventListener('mousemove', this.onMouseMove, false);
 
-      this.runShader()
+    },
+    animate: function() {
+      this.shouldRender && requestAnimationFrame(this.animate)
+      this.uniforms.u_time.value += 0.02
+      this.renderer.render(this.scene, this.camera)
     },
     onMouseMove: function(e) {
       this.uniforms.u_mouse.value.x = e.pageX
@@ -59,78 +72,59 @@ export default {
       this.uniforms.u_resolution.value.x = this.renderer.domElement.width
       this.uniforms.u_resolution.value.y = this.renderer.domElement.height
     },
-    runShader: function () {
-      const init = () => {
-        this.container = document.getElementById('c')
+    init: function() {
+       this.shouldRender = true;
+       this.container = document.getElementById('c')
 
         this.camera = new THREE.OrthographicCamera(500 / -2, 500 / 2, 500 / 2, 500 / -2, 2, 1000)
         this.camera.position.z = 1
 
-        this.scene = new THREE.Scene()
+              this.renderer = new THREE.WebGLRenderer()
+      this.renderer.setPixelRatio(window.devicePixelRatio)
+      this.canvasElement = this.renderer.domElement
 
-        var geometry = new THREE.PlaneBufferGeometry(2, 2)
+      this.scene = new THREE.Scene()
+      var geometry = new THREE.PlaneBufferGeometry(2, 2)
 
-        this.uniforms = {
-          u_time: { type: 'f', value: 1.0 },
-          u_resolution: { type: 'v2', value: new THREE.Vector2() },
-          u_mouse: { type: 'v2', value: new THREE.Vector2() }
-        }
+      this.uniforms = {
+        u_time: { type: 'f', value: 1.0 },
+        u_resolution: { type: 'v2', value: new THREE.Vector2() },
+        u_mouse: { type: 'v2', value: new THREE.Vector2() }
+      }
 
-        var material = new THREE.ShaderMaterial({
-          uniforms: this.uniforms,
-          vertexShader: this.vertexShader,
-          fragmentShader: this.fragmentShader
-        })
+      var material = new THREE.ShaderMaterial({
+        uniforms: this.uniforms,
+        vertexShader: this.vertexShader,
+        fragmentShader: this.fragmentShader
+      })
+      material.needsUpdate = true;
 
-        var mesh = new THREE.Mesh(geometry, material)
-        this.scene.add(mesh)
+      this.mesh = new THREE.Mesh(geometry, material)
+      this.scene.add(this.mesh);
+      this.container.appendChild(this.canvasElement)
 
-        this.renderer = new THREE.WebGLRenderer()
-        this.renderer.setPixelRatio(window.devicePixelRatio)
-        this.canvasElement = this.renderer.domElement
-
-        // if(CCapture) {
-
-        //   console.log('hiii', CCapture)
-        //   this.capturer = new CCapture({ format: 'webm', framerate: 60 });
-        // }
         this.capturer = new CanvasRecorder(this.canvasElement)
 
-        this.container.appendChild(this.canvasElement)
-
         this.onWindowResize();
-        // this.onMouseMove();
         window.addEventListener('resize', this.onWindowResize, false);
         window.addEventListener('mousemove', this.onMouseMove, false);
-      }
-
-
-      const animate = () => {
-        requestAnimationFrame(animate)
-        render()
-
-        // if (this.canvasElement && this.capturer && this.isRecording) {
-        //   this.capturer.capture(this.canvasElement)
-        // }
-      }
-
-      const render = () => {
-        this.uniforms.u_time.value += 0.02
-        this.renderer.render(this.scene, this.camera)
-      }
-
-      init()
-      animate()
+    },
+    runShader: function () {
+      this.init();
+      this.animate()
     }
 
   },
-
   mounted () {
     this.$nextTick(function () {
       // Code that will run only after the
       // entire view has been rendered
       this.runShader()
     })
+  },
+  beforeDestroy() {
+
+    this.clearAnimation();
   }
 }
 </script>

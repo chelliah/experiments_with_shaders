@@ -16,9 +16,9 @@ import BasicRenderer from '../../Components/BasicRenderer.vue'
 
 var fragmentShaderSource = require('./fragment.glsl')
 
-var fragmentShaderSource2 = require('./fragment2.glsl')
-var fragmentShaderSource3 = require('./fragment3.glsl')
-var fragmentShaderSource4 = require('./fragment4.glsl')
+// var fragmentShaderSource2 = require('./fragment2.glsl')
+// var fragmentShaderSource3 = require('./fragment3.glsl')
+// var fragmentShaderSource4 = require('./fragment4.glsl')
 
 var vertexShaderSource = require('./vertex.glsl')
 
@@ -33,7 +33,12 @@ export default {
     return {
       fragmentShaderSource,
       vertexShaderSource,
-      shaderOptions: [fragmentShaderSource, fragmentShaderSource2, fragmentShaderSource3, fragmentShaderSource4]
+      shaderOptions: [
+        fragmentShaderSource,
+        // fragmentShaderSource2,
+        // fragmentShaderSource3,
+        // fragmentShaderSource4
+      ]
     }
   },
   props: ['label'],
