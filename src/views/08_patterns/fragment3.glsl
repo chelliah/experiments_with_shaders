@@ -48,6 +48,7 @@ float stripePosition(in float _pos,in float _edge,in float _width){
 
 void main() {
     vec2 st = gl_FragCoord.xy/u_resolution;
+    st.x *= u_resolution.x;
     vec3 color = light_grey; // light grey
 
     st = st * rotate2d(PI*-0.25+(u_time/20.));

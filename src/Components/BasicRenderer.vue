@@ -24,7 +24,8 @@ export default {
       camera: null,
       capturer: null,
       scene: new THREE.Scene(),
-      renderer: new THREE.WebGLRenderer()
+      renderer: new THREE.WebGLRenderer(),
+      uniforms: {}
     }
   },
   watch: {
@@ -42,16 +43,25 @@ export default {
   },
   methods: {
     onChangeFragmentShader: function () {
-      var container = document.getElementById('c')
-      container.removeChild(container.childNodes[0])
+      this.container = document.getElementById('c')
+      this.container.removeChild(this.container.childNodes[0])
+      window.removeEventListener('resize', this.onWindowResize, false)
+      window.removeEventListener('mousemove', this.onMouseMove, false);
+
       this.runShader()
     },
+    onMouseMove: function(e) {
+      this.uniforms.u_mouse.value.x = e.pageX
+      this.uniforms.u_mouse.value.y = e.pageY
+    },
+    onWindowResize: function() {
+      this.renderer.setSize(this.container.getBoundingClientRect().width, this.container.getBoundingClientRect().height)
+      this.uniforms.u_resolution.value.x = this.renderer.domElement.width
+      this.uniforms.u_resolution.value.y = this.renderer.domElement.height
+    },
     runShader: function () {
-      var container
-      var uniforms
-
       const init = () => {
-        container = document.getElementById('c')
+        this.container = document.getElementById('c')
 
         this.camera = new THREE.OrthographicCamera(500 / -2, 500 / 2, 500 / 2, 500 / -2, 2, 1000)
         this.camera.position.z = 1
@@ -60,14 +70,14 @@ export default {
 
         var geometry = new THREE.PlaneBufferGeometry(2, 2)
 
-        uniforms = {
+        this.uniforms = {
           u_time: { type: 'f', value: 1.0 },
           u_resolution: { type: 'v2', value: new THREE.Vector2() },
           u_mouse: { type: 'v2', value: new THREE.Vector2() }
         }
 
         var material = new THREE.ShaderMaterial({
-          uniforms: uniforms,
+          uniforms: this.uniforms,
           vertexShader: this.vertexShader,
           fragmentShader: this.fragmentShader
         })
@@ -86,22 +96,14 @@ export default {
         // }
         this.capturer = new CanvasRecorder(this.canvasElement)
 
-        container.appendChild(this.canvasElement)
+        this.container.appendChild(this.canvasElement)
 
-        onWindowResize()
-        window.addEventListener('resize', onWindowResize, false)
-
-        document.onmousemove = function (e) {
-          uniforms.u_mouse.value.x = e.pageX
-          uniforms.u_mouse.value.y = e.pageY
-        }
+        this.onWindowResize();
+        // this.onMouseMove();
+        window.addEventListener('resize', this.onWindowResize, false);
+        window.addEventListener('mousemove', this.onMouseMove, false);
       }
 
-      const onWindowResize = () => {
-        this.renderer.setSize(container.getBoundingClientRect().width, container.getBoundingClientRect().height)
-        uniforms.u_resolution.value.x = this.renderer.domElement.width
-        uniforms.u_resolution.value.y = this.renderer.domElement.height
-      }
 
       const animate = () => {
         requestAnimationFrame(animate)
@@ -113,7 +115,7 @@ export default {
       }
 
       const render = () => {
-        uniforms.u_time.value += 0.02
+        this.uniforms.u_time.value += 0.02
         this.renderer.render(this.scene, this.camera)
       }
 
@@ -158,8 +160,8 @@ export default {
 }
 
 #c {
-  width: 1024px;
-  height: 1024px;
+  width: 512px;
+  height: 512px;
   box-shadow: 0 2px 2px rgba(0,0,0,0.3);
   margin: 0 auto;
 }

@@ -14,6 +14,7 @@ import Matrices07 from './views/07_matrices/index.vue'
 import Patterns08 from './views/08_patterns/index.vue'
 import Random09 from './views/09_randomness/index.vue'
 import Noise10 from './views/10_noise/index.vue'
+import CellularNoise11 from './views/11_cellular_noise/index.vue'
 
 Vue.use(Router)
 
@@ -132,6 +133,15 @@ export const routes = [
     component: Noise10,
     props: {
       label: '10 - Noise'
+    }
+  },
+
+  {
+    path: '/11-cellular-noise',
+    name: 'cellular noise',
+    component: CellularNoise11,
+    props: {
+      label: '11 - Cellular Noise'
     }
   }
 ]
