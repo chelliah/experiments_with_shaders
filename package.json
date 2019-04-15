@@ -5,7 +5,8 @@
   "author": "",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "rm -rf ./dist && vue-cli-service build",
+    "deploy": "serverless deploy",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -27,6 +28,9 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
+    "serverless": "^1.40.0",
+    "serverless-hooks-plugin": "^1.1.0",
+    "serverless-s3-sync": "^1.7.3",
     "vue-template-compiler": "^2.5.17",
     "webpack-glsl-loader": "^1.0.1"
   },
