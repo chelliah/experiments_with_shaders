@@ -5,7 +5,7 @@
       <router-link to="/01-hello-world">Example 01</router-link>
     </div> -->
 
-    <ul id="nav">
+    <ul id="nav" :class="`${hideNavBar  ? 'collapsible' : ''}`">
       <li :key="key" v-for="(route, key) in routes" :class="route.className">
         <router-link v-bind="route" :to="route.value">{{ route.label }}</router-link>
       </li>
@@ -20,7 +20,13 @@ export default {
   name: 'App',
   data () {
     return { routes: routes.map((route) => { return { key: route.key, label: route.props.label, value: route.path, className: route.className } }) }
-  }
+  },
+  computed: {
+    hideNavBar() {
+      console.log(this.$route)
+      return this.$route && this.$route.meta && this.$route.meta.hideNavBar
+    }
+  },
 }
 </script>
 <style>
@@ -56,6 +62,28 @@ html, body {
 
 }
 
+
+#nav.collapsible {
+  position: fixed;
+  z-index: 100;
+  width: 264px;
+  box-sizing: border-box;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  transition: transform 0.3s ease-out;
+  transform: translateX(-264px);
+  background: none;
+  box-shadow: none;
+
+  background:rgba(255,255,255,0.2);
+}
+
+#nav.collapsible:hover{
+  transform: translateX(0%);
+  background:rgba(255,255,255,0.9);
+}
+
 #nav li a {
   color: rgba(30,30,30);
   text-decoration: none;
@@ -81,6 +109,24 @@ html, body {
   left: -32px;
   width: 4px;
   background: #eb357f;
+}
+
+#nav.collapsible li:not(.home) .router-link-exact-active::before {
+  content: "nav";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  width: 42px;
+  transition: transform 0.3s ease-out 0.3s;
+  transform: translateX(264px);
+}
+
+#nav.collapsible:hover li:not(.home) .router-link-exact-active::before {
+  content: "";
+  width: 4px;
+  transition: transform 0.1s ease-out, width 0.1s;
+  transform: translateX(0px);
 }
 
 #nav li.home {

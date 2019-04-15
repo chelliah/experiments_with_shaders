@@ -15,6 +15,8 @@ import Patterns08 from './views/08_patterns/index.vue'
 import Random09 from './views/09_randomness/index.vue'
 import Noise10 from './views/10_noise/index.vue'
 import CellularNoise11 from './views/11_cellular_noise/index.vue'
+import BrownianMotion12 from './views/12_brownian_motion/index.vue'
+import WeatherViz from './views/weather_viz/index.vue'
 
 Vue.use(Router)
 
@@ -142,6 +144,25 @@ export const routes = [
     component: CellularNoise11,
     props: {
       label: '11 - Cellular Noise'
+    }
+  },
+  {
+    path: '/12-brownian-motion',
+    name: 'brownian motion',
+    component: BrownianMotion12,
+    props: {
+      label: '12 - Brownian Motion'
+    }
+  },
+  {
+    path: '/weather-viz',
+    name: 'weather viz',
+    component: WeatherViz,
+    meta: {
+      hideNavBar: true
+    },
+    props: {
+      label: 'Weather Viz'
     }
   }
 ]
