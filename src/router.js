@@ -17,6 +17,7 @@ import Noise10 from './views/10_noise/index.vue'
 import CellularNoise11 from './views/11_cellular_noise/index.vue'
 import BrownianMotion12 from './views/12_brownian_motion/index.vue'
 import WeatherViz from './views/weather_viz/index.vue'
+import ImagesExperiment from './views/images_experiment/index.vue'
 
 Vue.use(Router)
 
@@ -163,6 +164,16 @@ export const routes = [
     },
     props: {
       label: 'Weather Viz'
+    }
+  }, {
+    component: ImagesExperiment,
+    path: '/images-experiment',
+    name: 'images',
+    meta: {
+      hideNavBar: true
+    },
+    props: {
+      label: 'Images'
     }
   }
 ]

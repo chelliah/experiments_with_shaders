@@ -10,7 +10,7 @@ uniform float u_time;
 
 float random(float x) {
   //looks like tv static
-  return fract(sin(x) * sin(x) * 238417.1234132);
+  return fract(sin(x) * sin(x) * 238417.1234132,);
 }
 
 float random(vec2 st) {

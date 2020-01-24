@@ -29,3 +29,8 @@ yarn run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+
+## Those good links
+[Shader Frog](https://shaderfrog.com/) to combine fragment shaders
