@@ -38,6 +38,8 @@ var fragmentShaderSource3 = require('./fragment3.glsl')
 var fragmentShaderSource4 = require('./fragment4.glsl')
 var fragmentShaderSource5 = require('./fragment5.glsl')
 
+var fragmentShaderSource6 = require('./fragment6.glsl')
+
 var vertexShaderSource = require('./vertex.glsl')
 
 export default {
@@ -56,7 +58,8 @@ export default {
         fragmentShaderSource2,
         fragmentShaderSource3,
         fragmentShaderSource4,
-        fragmentShaderSource5
+        fragmentShaderSource5,
+        fragmentShaderSource6
       ]
     }
   },
