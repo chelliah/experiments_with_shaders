@@ -64,32 +64,39 @@ float translated_circle(in vec2 _st, in float displacement, in float _radius) {
 
 void main() {
   vec2 st = gl_FragCoord.xy/u_resolution.xy;
-  st *= 12.;
+  st *= 8.;
   
   
   float dist1 = distance(st.y, 0.);
   float dist2 = distance(st.y, 4.);
   float dist3 = distance(st.y, 8.);
-  float dist4 = distance(st.y, 12.);
 
-  float dist_all = min(min(min(dist1, dist2), dist3), dist4)/4.;
+  float dist_all = min(min(dist1, dist2), dist3);
 //   st.y += sin(st.x) * abs(dist_all);
 
-  float distX1 = distance(st.x, 6.);
+  float distX1 = distance(st.x, 4.);
+  float distX2 = distance(st.x, 8.);
+  float dist_x_all = sqrt(min(distX1, distX2));
   
-  float amplitude = .8;
+  float amplitude = 1.8;
   float frequency = 1.;
-  float y = sin(st.x * frequency);
-  float t = 0.01*(u_time*10.0);
-  st.y += sin(st.x*frequency*2.1 + t)/4.5 * dist_all;
-  st.y += sin(st.x*frequency*0.768 + t)/20.0 * distX1;
+  float x = st.x / 8. * 2. * PI;
+  float t = u_time/3.;
+
+  st.y += step(st.y, 4.) * sin(x + PI/32. + t) * (dist_all) /4. ;
+
+   st.y -= (1. - step(st.y, 4.)) * sin(x + t) * (dist_all) /4. ;
+
+  st.y += step(st.y, 4.) * sin(x + PI/32. + t/20.) * (dist_all) /4. ;
+
+   st.y -= (1. - step(st.y, 4.)) * sin(x + t/20.) * (dist_all) /4. ;
+  //st.y += sin(st.x*frequency*0.768 + t)/8.0 * dist_x_all;
 //   st.y += sin(st.x*frequency*2.221 + t)/5.0 * dist_all;
 //   st.y += sin(st.x*frequency*3.1122+ t)/2.5 * dist_all;
-//   st.y *= amplitude*0.06;
+  st *= 2.;
 
-  vec3 color = BROWN_2;
+  vec3 color = BROWN_3;
   float check = abs(mod(floor(st.x), 2.) - mod(floor(st.y),2.));
-
   if (check == 1.) {
       color = COCOA;
   }
