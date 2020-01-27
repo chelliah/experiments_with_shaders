@@ -64,70 +64,34 @@ float translated_circle(in vec2 _st, in float displacement, in float _radius) {
 
 void main() {
   vec2 st = gl_FragCoord.xy/u_resolution.xy;
-  st *= 15.;
-  vec2 flr = floor(st);
-  vec2 ipos = fract(st);
-  st = ipos;
+  st *= 12.;
+  
+  
+  float dist1 = distance(st.y, 0.);
+  float dist2 = distance(st.y, 4.);
+  float dist3 = distance(st.y, 8.);
+  float dist4 = distance(st.y, 12.);
 
-  float modX = mod(flr.x, 2. ); // 0 or 1;
+  float dist_all = min(min(min(dist1, dist2), dist3), dist4)/4.;
+//   st.y += sin(st.x) * abs(dist_all);
 
-  float modY = mod(flr.y, 2. ); // 0 or 1;
+  float distX1 = distance(st.x, 6.);
+  
+  float amplitude = .8;
+  float frequency = 1.;
+  float y = sin(st.x * frequency);
+  float t = 0.01*(u_time*10.0);
+  st.y += sin(st.x*frequency*2.1 + t)/4.5 * dist_all;
+  st.y += sin(st.x*frequency*0.768 + t)/20.0 * distX1;
+//   st.y += sin(st.x*frequency*2.221 + t)/5.0 * dist_all;
+//   st.y += sin(st.x*frequency*3.1122+ t)/2.5 * dist_all;
+//   st.y *= amplitude*0.06;
 
-  if(modX == 0. && modY == 0. ) {
+  vec3 color = BROWN_2;
+  float check = abs(mod(floor(st.x), 2.) - mod(floor(st.y),2.));
 
-    st = rotate2D(st, PI/4. * 7.);
-  } else if (modX == 1. && modY == 0.) {
-    st = rotate2D(st, PI/4. * 3.);
-  } else if (modX == 0. && modY == 1.) {
-    st = rotate2D(st, PI/4. * 5.);
-  } else if (modX == 1. && modY == 1.) {
-    st = rotate2D(st, PI/4.);
-  }
-
-
-
-  //   //  integer value 0 to 10
-  // vec2 ipos = floor(st);
-  // // fractional value 0.0 to 1.0
-  // vec2 fpos = fract(st);
-  // // vec2 fpos = floo
-  // // st -= vec2(.5);
-
-  float circ_1 = circle(st, 0.5);
-  float circ_2 = circle(vec2(st.x - .15 * sin(PI/4. * 7.), st.y) , 0.28);
-
-  // vec2 mouse_point = u_mouse/u_resolution;
-
-  // float displacement = distance(flr + ipos, mouse_point * 15.);
-  // float circ_3 = translated_circle(st, -1. * displacement, 0.5);
-  // float circ_4 = translated_circle(vec2(st.x - .15 * sin(PI/4. * 7.), st.y), -1. * displacement,  0.28);
-
-
-
-  vec3 color = BROWN_1;
-
-  // float nz = noise((ipos * u_time/20. + flr)/5. + u_time/20.);
-  float nz = noise((ipos+ flr)/5. + u_time/20.) + noise((ipos + flr)/32. + u_time/18.);
-
-  // if (circ_3 > 0. && circ_4 == 0.) {
-  //   color = PINK;
-  // }
-  if (circ_1 > 0. && circ_2 == 0.) {
-    // if(nz > 1. && nz < 1.3) {
-    //   float prg = smoothstep(1.3, 1., nz);
-    //   float rnd = noise(vec2((flr + ipos)*200. +u_time/20.));
-
-    //   if(rnd > prg) {
-    //     color = mix(PINK, BROWN_2, 0.3);
-    //   } else {
-    //     color = BROWN_2;
-    //   }
-    // } else if(nz >= 1.3) {
-    //     color = mix(PINK, BROWN_2, 0.3);
-    // } else {
-    //   color = BROWN_2;
-    // }
-    color = BROWN_2;
+  if (check == 1.) {
+      color = COCOA;
   }
 
   gl_FragColor = vec4(color, 1.);

@@ -3,17 +3,14 @@ precision highp float;
 #endif
 
 #define PI 3.14159265359
-
 #define BROWN_1 vec3(.875, .549, .388)
 #define BROWN_2 vec3(.82, .498, .341) //82% red, 49.8% green and 34.1% blue
 #define BROWN_3 vec3(.576, .29, .188) //57.6% red, 29% green and 18.8% blue
 #define BROWN_4 vec3(.753, .51, .388) // 75.3% red, 51% green and 38.8% blue
 #define PINK vec3(.992,.624,.482) //99.2% red, 62.4% green and 48.2% blue.
 #define COCOA  vec3(.349, .157, .098) //34.9% red, 15.7% green and 9.8% blue
-
 uniform vec2 u_resolution;
 uniform float u_time;
-uniform vec2 u_mouse;
 
 vec2 rotate2D(vec2 _st, float _angle) {
   _st -= 0.5;
@@ -58,13 +55,9 @@ float circle(in vec2 _st, in float _radius) {
                           dot(dist, dist)*4.0);
 }
 
-float translated_circle(in vec2 _st, in float displacement, in float _radius) {
-  return circle(_st - displacement, _radius);
-}
-
 void main() {
   vec2 st = gl_FragCoord.xy/u_resolution.xy;
-  st *= 15.;
+  st *= vec2(200., 300.);
   vec2 flr = floor(st);
   vec2 ipos = fract(st);
   st = ipos;
@@ -96,39 +89,26 @@ void main() {
   float circ_1 = circle(st, 0.5);
   float circ_2 = circle(vec2(st.x - .15 * sin(PI/4. * 7.), st.y) , 0.28);
 
-  // vec2 mouse_point = u_mouse/u_resolution;
-
-  // float displacement = distance(flr + ipos, mouse_point * 15.);
-  // float circ_3 = translated_circle(st, -1. * displacement, 0.5);
-  // float circ_4 = translated_circle(vec2(st.x - .15 * sin(PI/4. * 7.), st.y), -1. * displacement,  0.28);
-
-
-
   vec3 color = BROWN_1;
 
   // float nz = noise((ipos * u_time/20. + flr)/5. + u_time/20.);
-  float nz = noise((ipos+ flr)/5. + u_time/20.) + noise((ipos + flr)/32. + u_time/18.);
+  float nz = noise(rotate2D(ipos + flr, PI/1.421 * (u_time + 9345.435) /-50. + 20.)/32./5. + u_time/60.) + noise(rotate2D(ipos + flr, PI/1.421 * (u_time + 12323.412)/500. + 12123.12)/32. + u_time/18.) + noise(rotate2D(ipos + flr, PI/1.421 + (sin(u_time/300.) + u_time/600. + 12323.412)/-80. + 12123.12)/32. + u_time/18.)
+;
 
-  // if (circ_3 > 0. && circ_4 == 0.) {
-  //   color = PINK;
-  // }
-  if (circ_1 > 0. && circ_2 == 0.) {
-    // if(nz > 1. && nz < 1.3) {
-    //   float prg = smoothstep(1.3, 1., nz);
-    //   float rnd = noise(vec2((flr + ipos)*200. +u_time/20.));
 
-    //   if(rnd > prg) {
-    //     color = mix(PINK, BROWN_2, 0.3);
-    //   } else {
-    //     color = BROWN_2;
-    //   }
-    // } else if(nz >= 1.3) {
-    //     color = mix(PINK, BROWN_2, 0.3);
-    // } else {
-    //   color = BROWN_2;
-    // }
-    color = BROWN_2;
-  }
+   float pct = smoothstep(1.09, 1.1, nz);
+   float pct2 = smoothstep(1.49, 1.5, nz);
+   float pct3 = smoothstep(1.99, 2.0, nz);
+//    color = mix(BROWN_1, PINK, pct);
+//    color = mix(BROWN_1, BROWN_2, pct) * mix(PINK, BROWN_2, pct2);
+
+   if(nz < 1.1) {
+       color = mix(COCOA, BROWN_2, pct);
+   } else if (nz < 1.5 ) {
+       color = mix(BROWN_2, BROWN_3, pct2);
+   } else {
+       color = mix(BROWN_3, BROWN_4, pct3);
+   }
 
   gl_FragColor = vec4(color, 1.);
 }

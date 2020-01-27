@@ -39,6 +39,8 @@ var fragmentShaderSource4 = require('./fragment4.glsl')
 var fragmentShaderSource5 = require('./fragment5.glsl')
 
 var fragmentShaderSource6 = require('./fragment6.glsl')
+var tieDyeFrag = require("./tiedye.frag.glsl")
+var checkerboardFrag = require('./checkerboard.frag.glsl');
 
 var vertexShaderSource = require('./vertex.glsl')
 
@@ -59,7 +61,9 @@ export default {
         fragmentShaderSource3,
         fragmentShaderSource4,
         fragmentShaderSource5,
-        fragmentShaderSource6
+        fragmentShaderSource6,
+        tieDyeFrag,
+        checkerboardFrag
       ]
     }
   },
