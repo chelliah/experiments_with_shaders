@@ -9,6 +9,8 @@ precision highp float;
 #define BROWN_4 vec3(.753, .51, .388) // 75.3% red, 51% green and 38.8% blue
 #define PINK vec3(.992,.624,.482) //99.2% red, 62.4% green and 48.2% blue.
 #define COCOA  vec3(.349, .157, .098) //34.9% red, 15.7% green and 9.8% blue
+#define OLIVE vec3(.62, .682, .384) //62% red, 68.2% green and 38.4% blue
+#define BROWN_5 vec3(.706, .40, .259) //70.6% red, 40% green and 25.9%
 uniform vec2 u_resolution;
 uniform float u_time;
 
@@ -92,23 +94,39 @@ void main() {
   vec3 color = BROWN_1;
 
   // float nz = noise((ipos * u_time/20. + flr)/5. + u_time/20.);
-  float nz = noise(rotate2D(ipos + flr, PI/1.421 * (u_time + 9345.435) /-50. + 20.)/32./5. + u_time/60.) + noise(rotate2D(ipos + flr, PI/1.421 * (u_time + 12323.412)/500. + 12123.12)/32. + u_time/18.) + noise(rotate2D(ipos + flr, PI/1.421 + (sin(u_time/300.) + u_time/600. + 12323.412)/-80. + 12123.12)/32. + u_time/18.)
+  float nz = noise(rotate2D(ipos + flr, PI/1.421 * (u_time + 9345.435) /-50. + 20.)/32./5. + u_time/60.) + noise(rotate2D(ipos + flr, PI/1.421 * (u_time + 12323.412)/150. + 12123.12)/32. + u_time/18.) + noise(rotate2D(ipos + flr, PI/1.421 + (sin(u_time/300.) + u_time/600. + 12323.412)/-80. + 12123.12)/32. + u_time/18.)
 ;
 
 
-   float pct = smoothstep(1.09, 1.1, nz);
-   float pct2 = smoothstep(1.49, 1.5, nz);
-   float pct3 = smoothstep(1.99, 2.0, nz);
+//    float pct = smoothstep(1.09, 1.1, nz);
+//    float pct2 = smoothstep(1.49, 1.5, nz);
+//    float pct3 = smoothstep(1.99, 2.0, nz);
 //    color = mix(BROWN_1, PINK, pct);
 //    color = mix(BROWN_1, BROWN_2, pct) * mix(PINK, BROWN_2, pct2);
 
-   if(nz < 1.1) {
-       color = mix(COCOA, BROWN_2, pct);
-   } else if (nz < 1.5 ) {
-       color = mix(BROWN_2, BROWN_3, pct2);
+//    if(nz < 1.1) {
+//        color = mix(COCOA, BROWN_2, pct);
+//    } else if (nz < 1.5 ) {
+//        color = mix(BROWN_2, BROWN_3, pct2);
+//    } else {
+//        color = mix(BROWN_3, BROWN_4, pct3);
+//    }
+
+   float pct = smoothstep(.0, 1.5, nz);
+   float pct2 = smoothstep(1.3, 1.9, nz);
+   float pct3 = smoothstep(2.0, 3., nz);
+//    color = mix(BROWN_1, PINK, pct);
+//    color = mix(BROWN_1, BROWN_2, pct) * mix(PINK, BROWN_2, pct2);
+
+   if(nz < 1.) {
+       color = mix(OLIVE, BROWN_2, pct);
+   } else if (nz < 2. ) {
+       color = mix(BROWN_2, BROWN_3, pct);
    } else {
-       color = mix(BROWN_3, BROWN_4, pct3);
+       color = mix(BROWN_3, OLIVE, pct);
    }
+
+  color = mix(mix(BROWN_5, BROWN_4, pct3 / pct), mix(BROWN_3, OLIVE, (pct + pct3)), pct2);
 
   gl_FragColor = vec4(color, 1.);
 }

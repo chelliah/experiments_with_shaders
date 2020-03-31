@@ -12,7 +12,10 @@
 var THREE = require('three')
 import CanvasRecorder from "./canvasRecorder.js";
 // var CCapture = require('../assets/CCapture')
-
+const canvas_size = {
+  x: 1440,
+  y: 900
+}
 export default {
   name: 'BasicRenderer',
   props: ['vertexShader', 'fragmentShader'],
@@ -76,7 +79,7 @@ export default {
        this.shouldRender = true;
        this.container = document.getElementById('c')
 
-        this.camera = new THREE.OrthographicCamera(500 / -2, 500 / 2, 500 / 2, 500 / -2, 2, 1000)
+        this.camera = new THREE.OrthographicCamera(canvas_size.x / -2, canvas_size.y / 2, canvas_size.x / 2, canvas_size.y / -2, 2, 1000)
         this.camera.position.z = 1
 
               this.renderer = new THREE.WebGLRenderer()
@@ -154,8 +157,8 @@ export default {
 }
 
 #c {
-  width: 512px;
-  height: 512px;
+  width: 1440px;
+  height: 900px;
   box-shadow: 0 2px 2px rgba(0,0,0,0.3);
   margin: 0 auto;
 }

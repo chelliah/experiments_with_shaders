@@ -1,8 +1,12 @@
 #ifdef GL_ES
 precision mediump float;
 #endif
+
+#define BROWN_3 vec3(	1.,	.894,	.831) //100% red, 89.4% green and 83.1% blue.
+
 uniform vec2 u_resolution;
 uniform float u_time;
+uniform vec2 u_mouse;
 uniform sampler2D u_texture; // <---------------------------------- texture sampler uniform
 
 varying vec2 vUv;
@@ -55,19 +59,11 @@ float fbm (in vec2 _st) {
 }
 
 void main() {
-  vec2 st = vUv;
+  vec2 st = gl_FragCoord.xy/u_resolution.xy;
 
-  vec2 q = vec2(0.);
-  q.x = fbm( st + 0.0*u_time);
-  q.y = fbm( st + vec2(1.));
+  vec3 color = texture2D(u_texture, vUv ).r * BROWN_3;
 
-  vec2 r = vec2(0.);
-  r.x = fbm( st + 1.*q + vec2(1.7, 9.2) + 0.15*u_time);
-  r.y = fbm( st + 1.*q + vec2(8.3, 2.8) + 0.126*u_time);
-
-  float f = fbm(st + r);
-
-  vec3 color = texture2D(u_texture, vUv * f*2.).rgb;
+  // float opacity = distance(u_mouse,st);
 
   // gl_FragColor = vec4(1.0, 0.8, .8, 1.);
   // color.r += 1. * st.x * sin(u_time);

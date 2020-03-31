@@ -63,8 +63,9 @@ function runShader () {
 
     var positions = [
       0, 0,
-      0, 0.5,
-      0.6, 0
+      0, 1.,
+      1., 0,
+      1.,1.
     ]
 
     // The last argument, gl.STATIC_DRAW is a hint to WebGL about how we'll use the data. WebGL can try to use that hint to optimize certain things. gl.STATIC_DRAW tells WebGL we are not likely to change this data much.
@@ -104,7 +105,7 @@ function runShader () {
       positionAttributeLocation, size, type, normalize, stride, offset)
 
     var primitiveType = gl.TRIANGLES
-    var count = 3
+    var count = 4
     gl.drawArrays(primitiveType, offset, count)
   }
 }

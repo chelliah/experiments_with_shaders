@@ -14,7 +14,7 @@ import glslify from "glslify";
 import CanvasRecorder from "../../Components/canvasRecorder";
 // var CCapture = require('../assets/CCapture')
 // import img from "./ShibaInu.png";
-const img = require("./ShibaInu.png")
+const img = require("./me.jpg")
 import vertexShader from "./vertex.glsl";
 import fragmentShader from "./fragment.glsl";
 
